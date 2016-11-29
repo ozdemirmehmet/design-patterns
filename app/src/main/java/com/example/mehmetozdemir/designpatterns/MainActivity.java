@@ -8,6 +8,12 @@ import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediato
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.ElectronicDevice;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Radio;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Television;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.memento.Document;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.memento.DocumentReminder;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.memento.DocumentWriter;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observer.CustomerType1;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observer.CustomerType2;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observer.PriceTopic;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.BankAccount;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.ForeignCurrencyBankAccount;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.FastOrderSelector;
@@ -231,5 +237,46 @@ public class MainActivity extends AppCompatActivity {
         //Daha sonra yapılan tüm işlemler bu hesap türüne göre(döviz hesabı) yapılıyor.
         bankAccount.payMoney();
         bankAccount.pullMoney();
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Observer design pattern
+        //Yeni bir fiyat konusu örnekledik
+        PriceTopic priceTopic = new PriceTopic("Samsung Galaxy S5");
+        //2 tane ayrı müşteri tiplerinde müşteriler örnekledik.
+        CustomerType1 customerType1 = new CustomerType1("Mehmet");
+        CustomerType2 customerType2 = new CustomerType2("Ahmet");
+        //Yukarıda örneklediğimiz fiyat konusuna yine yukarıda örneklediğimiz müşterileri
+        //bu fiyat konusunu izleyen müşteriler olarak ekledik.
+        //Artık yapılan değişimlerden fiyat konusuna dahil olan müşteriler hemen haberdar olabilecek.
+        priceTopic.addObserver(customerType1);
+        priceTopic.addObserver(customerType2);
+        //Fiyatı değişitrdiğmizde veya direk müşterileri haber ver(giveNoticeObservers) metodu ile
+        //konuya bağlı bulunan müşterilere(gözlemcilere) haber verdik.
+        priceTopic.changePrice(1500);
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Memento design pattern
+        //Yeni bir döküman nesnesi oluşturuyoruz
+        Document document = new Document();
+        //Bu dökümana içerik atıyoruz.
+        document.assignContent("First entry");
+        //Daha sonra bir dokuman yazıcısı tanımlıyoruz ve yukarıda oluşturuduğumuz dokümanı parametre olarak veriyoruz.
+        DocumentWriter documentWriter = new DocumentWriter(document);
+        //Bu döküman yazıcısıyla yazdığımız içerikler yukarıdaki dökümana aktarılır.
+        documentWriter.writeDocument("Second entry");
+        documentWriter.writeDocument("Third entry");
+        documentWriter.writeDocument("Fourth entry");
+        documentWriter.writeDocument("Fifth entry");
+        //döküman içerisindeki son içeriği yazdırıyoruz.
+        Log.d("Memento => ", "Dokümandaki son içerik: " + document.getContent());
+        //Döküman yazıcısı ve onun içindeki döküman hatırlayıcısı yardımıyla geri al işlemleri
+        //yaparak önceki içeriklere ulaşıyoruz.
+        documentWriter.getBack();
+        documentWriter.getBack();
+        Log.d("Memento => ", "2 öğe dokümandan çıkarıldıktan sonra dokümandaki son içerik: " + document.getContent());
     }
 }
