@@ -4,6 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.chainOfResponsibility.Function;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.chainOfResponsibility.FunctionA;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.chainOfResponsibility.FunctionB;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.chainOfResponsibility.FunctionC;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.Lamp;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampButtons;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampCloseCommand;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampOpenCommand;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.DeviceMediator;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.ElectronicDevice;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Radio;
@@ -303,5 +311,46 @@ public class MainActivity extends AppCompatActivity {
         cooker1.makeEat();
         Log.d("Template Method => ", "--------------------------------------");
         cooker2.makeEat();
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Command design pattern
+        //Bir lamba nesnesi oluşturuluyor.
+        Lamp lamp = new Lamp();
+        //Bu lamba nesnesi ile lamba açma ve lamba kapatma nesneleri oluşturuluyor.
+        LampOpenCommand lampOpenCommand = new LampOpenCommand(lamp);
+        LampCloseCommand lampCloseCommand = new LampCloseCommand(lamp);
+        //Lamba açma ve lamba kapatma nesneleri ile lamba butonu nesnesi oluşturuluyor.
+        //Birden fazla nesne bu nesne üzerinde birleştiriliyor.
+        //Bu sınıf üzerinden işlemler yapılıyor.
+        LampButtons lampButtons = new LampButtons(lampOpenCommand, lampCloseCommand);
+        //Lamba butonu nesnesi üzerinden lambaya erişim sağlanıyor.
+        lampButtons.openLamp();
+        lampButtons.closeLamp();
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Chain of Responsibility design pattern
+        //Function tanımlamaları yapılıyor.
+        Function function1, function2;
+        //Function' a işlev ataması yapılıyor ve daha sonra bağlı listeye benzer bir yapıda
+        //ancak bağlı listedeki gibi nesne adreslerini tutmayarak nesnelerin kendilerini
+        //her bir nesnenin içinde saklayarak işlevler ard arda ekleniyor.
+        function1 = new FunctionA();
+        function2 = function1.setNextFunction(new FunctionC());
+        function2 = function2.setNextFunction(new FunctionA());
+        function2 = function2.setNextFunction(new FunctionB());
+        function2 = function2.setNextFunction(new FunctionA());
+        function2 = function2.setNextFunction(new Function() {
+            @Override
+            protected void doFunction(String functionData) {
+                Log.d("CofR => ", functionData + " verisi çalışma anında oluşturulan" +
+                        "\ntek sefer kullanılabilecek sınıf yapısı ile gerçekleştirildi.");
+            }
+        });
+        //run metodu ile birbirne bağlanmış tüm işlevler çalıştırılıyor.
+        function1.run("Test data");
     }
 }
