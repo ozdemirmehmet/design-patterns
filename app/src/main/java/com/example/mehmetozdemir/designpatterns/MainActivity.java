@@ -12,6 +12,10 @@ import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampButtons;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampCloseCommand;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.command.LampOpenCommand;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.interpreter.MinusSymbol;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.interpreter.PercentSymbol;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.interpreter.PlusSymbol;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.interpreter.Symbol;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.DeviceMediator;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.ElectronicDevice;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Radio;
@@ -24,6 +28,9 @@ import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observe
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observer.PriceTopic;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.BankAccount;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.ForeignCurrencyBankAccount;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.strategy.LoanShark;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.strategy.MethodA;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.strategy.MethodB;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.Cooker;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.RiceMaker;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.SoupMaker;
@@ -48,6 +55,9 @@ import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorat
 import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorator.SimplePhone;
 import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.flyweight.Character;
 import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.flyweight.CharacterCreator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -352,5 +362,32 @@ public class MainActivity extends AppCompatActivity {
         });
         //run metodu ile birbirne bağlanmış tüm işlevler çalıştırılıyor.
         function1.run("Test data");
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Strategy design pattern
+        LoanShark loanShark1 = new LoanShark(new MethodA());
+        LoanShark loanShark2 = new LoanShark(new MethodB());
+
+        loanShark1.calculateDebt();
+        loanShark2.calculateDebt();
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Interpreter design pattern
+        String text = "+--%%+";
+        List<Symbol> symbols = new ArrayList<>();
+
+        for (char c : text.toCharArray()){
+            if(c == '+')
+                symbols.add(new PlusSymbol());
+            else if(c == '-')
+                symbols.add(new MinusSymbol());
+            else if(c == '%')
+                symbols.add(new PercentSymbol());
+        }
+
+        for (Symbol s : symbols)
+            s.interpretSymbol();
     }
 }
