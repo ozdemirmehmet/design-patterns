@@ -34,6 +34,11 @@ import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.strateg
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.Cooker;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.RiceMaker;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.SoupMaker;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.visitor.Emplooye;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.visitor.Manager;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.visitor.SalaryCalculationVisitor;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.visitor.StaffVisitor;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.visitor.WorkPlanCalculationVisitor;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.FastOrderSelector;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.INotification;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.IOrder;
@@ -389,5 +394,21 @@ public class MainActivity extends AppCompatActivity {
 
         for (Symbol s : symbols)
             s.interpretSymbol();
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Visitor design pattern
+        Emplooye emplooye = new Emplooye();
+        Manager manager = new Manager();
+
+        StaffVisitor salaryCalculationVisitor = new SalaryCalculationVisitor();
+        StaffVisitor workPlanCalculationVisitor = new WorkPlanCalculationVisitor();
+
+        emplooye.accept(salaryCalculationVisitor);
+        manager.accept(salaryCalculationVisitor);
+
+        emplooye.accept(workPlanCalculationVisitor);
+        manager.accept(workPlanCalculationVisitor);
     }
 }
