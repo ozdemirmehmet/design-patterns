@@ -4,27 +4,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.mehmetozdemir.designpatterns.Creational.abstractFactory.FastOrderSelector;
-import com.example.mehmetozdemir.designpatterns.Creational.abstractFactory.INotification;
-import com.example.mehmetozdemir.designpatterns.Creational.abstractFactory.IOrder;
-import com.example.mehmetozdemir.designpatterns.Creational.abstractFactory.IPay;
-import com.example.mehmetozdemir.designpatterns.Creational.abstractFactory.NormalOrderSelector;
-import com.example.mehmetozdemir.designpatterns.Creational.builder.Computer;
-import com.example.mehmetozdemir.designpatterns.Creational.factoryMethod.IPictureFormat;
-import com.example.mehmetozdemir.designpatterns.Creational.factoryMethod.FormatSelector;
-import com.example.mehmetozdemir.designpatterns.Creational.prototype.Picture;
-import com.example.mehmetozdemir.designpatterns.Creational.singleton.TestObject;
-import com.example.mehmetozdemir.designpatterns.Structural.adapter.Address;
-import com.example.mehmetozdemir.designpatterns.Structural.adapter.Customer;
-import com.example.mehmetozdemir.designpatterns.Structural.adapter.CustomerBillAddressAdapter;
-import com.example.mehmetozdemir.designpatterns.Structural.composite.TeamManager;
-import com.example.mehmetozdemir.designpatterns.Structural.composite.TeamMember;
-import com.example.mehmetozdemir.designpatterns.Structural.decorator.CameraPhoneDecorator;
-import com.example.mehmetozdemir.designpatterns.Structural.decorator.MMSPhoneDecorator;
-import com.example.mehmetozdemir.designpatterns.Structural.decorator.Phone;
-import com.example.mehmetozdemir.designpatterns.Structural.decorator.SimplePhone;
-import com.example.mehmetozdemir.designpatterns.Structural.flyweight.Character;
-import com.example.mehmetozdemir.designpatterns.Structural.flyweight.CharacterCreator;
+import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.DeviceMediator;
+import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.ElectronicDevice;
+import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Radio;
+import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Television;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.FastOrderSelector;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.INotification;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.IOrder;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.IPay;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.NormalOrderSelector;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.builder.Computer;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.factoryMethod.IPictureFormat;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.factoryMethod.FormatSelector;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.prototype.Picture;
+import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.singleton.TestObject;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.adapter.Address;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.adapter.Customer;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.adapter.CustomerBillAddressAdapter;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.composite.TeamManager;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.composite.TeamMember;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorator.CameraPhoneDecorator;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorator.MMSPhoneDecorator;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorator.Phone;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.decorator.SimplePhone;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.flyweight.Character;
+import com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.flyweight.CharacterCreator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -173,5 +177,39 @@ public class MainActivity extends AppCompatActivity {
             Character character = characterCreator.getCharacter(c);
             character.printChar();
         }
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Facade design pattern
+        //Computer sınıfından bir nesne oluşturulur.
+        com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.facade.Computer computer1 = new com.example.mehmetozdemir.designpatterns.StructuralDesignPatterns.facade.Computer();
+        //Sadece  computer sınıfı içindeki openComputer metodunu kullanıyoruz.
+        //openComputer metodu içinde işlemci, sabit disk ve ram ile ilgili işlemler yapılır.
+        //Ancak burada biz bu işlemleri görmeden computer1 nesnesini çalışır hale geçirebiliyoruz.
+        computer1.openComputer();
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Mediator design pattern
+        //DeviceMediator sınıfında bir arabulucu nesne tanımladık.
+        DeviceMediator deviceMediator = new DeviceMediator();
+        //Elektronik cihazları yukarıda örneklediğimiz arabulucu nesnesini parametre vererek tanımladık.
+        //Bu sayede bu cihazlar arasında meadiator nesne sayesinde bir iletişim olur.
+        //Burada dikkat edilmesi gereken DeviceMediator sınıfının yapısıyla ilgili olarak aşağıdaki 3 elektronik
+        //cihaz olmadan(mediator a 3 elektronik cihazı tanımlamadan) herhangi bir işlem yapılmamasıdır.
+        //Çünkü işlem yapıldığında atama olmadığı için null pointer hatası alınacaktır.
+        ElectronicDevice computer2 = new com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Computer(deviceMediator);
+        ElectronicDevice television = new Television(deviceMediator);
+        ElectronicDevice radio = new Radio(deviceMediator);
+
+        //Burada cihazların start metodu kullanılarak hem ilgili cihaz çalıştırılır hem de diğer elektronik
+        //cihazlar kapatılır. Çünkü herbir cihazın start metodunda DeviceMediator üzerindeki ilgili cihazın start
+        //metodu da çağırılır. Bu metotta da(DeviceMediator daki start metodu) ilgili diğer tüm elektronik
+        //cihazların stop metodları çağırılır. Böylelikle başta anlatılan yapı elde edilmiş olur.
+        computer2.start();
+        //Bu şekilde bir cihazın çalışmasını durdurursak sadece ilgili cihaz durur. Çünkü ilgili cihazın
+        //stop metodu içinde DeviceMeditor üzerinden herhangi bir işlem yapılmaz. Böylelikle işlem sonucundan
+        //sadeece ilgili elektronik cihaz etkilenir.
+        television.stop();
     }
 }
