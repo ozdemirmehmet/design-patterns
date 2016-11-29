@@ -16,6 +16,9 @@ import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observe
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.observer.PriceTopic;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.BankAccount;
 import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.ForeignCurrencyBankAccount;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.Cooker;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.RiceMaker;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.templateMethod.SoupMaker;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.FastOrderSelector;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.INotification;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.IOrder;
@@ -278,5 +281,27 @@ public class MainActivity extends AppCompatActivity {
         documentWriter.getBack();
         documentWriter.getBack();
         Log.d("Memento => ", "2 öğe dokümandan çıkarıldıktan sonra dokümandaki son içerik: " + document.getContent());
+
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //Template Method design pattern
+        //Birer tane çorba ve pilav yapıcı nesnesi örneklendiriliyor.
+        Cooker cooker1 = new SoupMaker();
+        Cooker cooker2 = new RiceMaker();
+        //Cooker sınıfındaki makeEat metodu yardımıyla arka planda neler yapıldığını bilmeden
+        //ilgili yemeğin yapılması sağlanıyor.
+        //Facade design pattern a benziyor gibi durmasına karşılık.
+        //Facade design pattern da bir sınıf vardı ve bu sınıfta o sınıfın alt nesneleri vardı.
+        //Bu alt nesnelerin kendilerine ait method ve değişkenleri vardı.
+        //Bu metodlar ve/veya değişkenler ana sınıfta kullanılıyordu.
+        //Ana sınıfın çağırıldığı yerde tek bir metod veya sadece ana sınıfın metdoları ile tüm
+        //sistem harekete geçiriliyordu.
+        //Template Method da ise soyut bir sınıf ve bu sınıfın soyut metodları vardır.
+        //Bu soyut sınıfı kalıtım alan tüm sınıflar için tüm sistemi çalıştıracak ortak
+        //bir metot bulunmaktadır.
+        cooker1.makeEat();
+        Log.d("Template Method => ", "--------------------------------------");
+        cooker2.makeEat();
     }
 }
