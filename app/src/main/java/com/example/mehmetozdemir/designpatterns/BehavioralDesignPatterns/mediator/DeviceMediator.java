@@ -1,4 +1,4 @@
-package com.example.mehmetozdemir.designpatterns.Behavioral.mediator;
+package com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator;
 
 /**
  * Created by mehmetozdemir on 29/11/16.

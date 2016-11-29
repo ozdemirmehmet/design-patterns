@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.DeviceMediator;
-import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.ElectronicDevice;
-import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Radio;
-import com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Television;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.DeviceMediator;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.ElectronicDevice;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Radio;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Television;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.BankAccount;
+import com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.state.ForeignCurrencyBankAccount;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.FastOrderSelector;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.INotification;
 import com.example.mehmetozdemir.designpatterns.CreationalDesignPatterns.abstractFactory.IOrder;
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         //Burada dikkat edilmesi gereken DeviceMediator sınıfının yapısıyla ilgili olarak aşağıdaki 3 elektronik
         //cihaz olmadan(mediator a 3 elektronik cihazı tanımlamadan) herhangi bir işlem yapılmamasıdır.
         //Çünkü işlem yapıldığında atama olmadığı için null pointer hatası alınacaktır.
-        ElectronicDevice computer2 = new com.example.mehmetozdemir.designpatterns.Behavioral.mediator.Computer(deviceMediator);
+        ElectronicDevice computer2 = new com.example.mehmetozdemir.designpatterns.BehavioralDesignPatterns.mediator.Computer(deviceMediator);
         ElectronicDevice television = new Television(deviceMediator);
         ElectronicDevice radio = new Radio(deviceMediator);
 
@@ -211,5 +213,23 @@ public class MainActivity extends AppCompatActivity {
         //stop metodu içinde DeviceMeditor üzerinden herhangi bir işlem yapılmaz. Böylelikle işlem sonucundan
         //sadeece ilgili elektronik cihaz etkilenir.
         television.stop();
+
+
+        Log.d("Design Patterns", "*****************************************************************");
+        //State design pattern
+        //Yeni bir banka hesabı tanımlanıyor.
+        //BankAccount sınıfının kurucu metodunda oluşturulan hesap normal banka hesabı olarak açılıyor.
+        //Bu default olarak yapılan bir işlemdir.
+        BankAccount bankAccount = new BankAccount();
+        //Bu banka hesabı üzerinden para ödeme ve çekme işlemleri alttaki metotlarla yapılıyor.
+        //Hesap normal banka hesabı olduğu için işlemler buna göre yapılıyor.
+        bankAccount.payMoney();
+        bankAccount.pullMoney();
+        //Oluşturulan bu banka hesabının hesap türü çalışma anında değiştiriliyor.
+        //Hesabın yeni türü döviz hesabı olarak değiştiriliyor.
+        bankAccount.changeBankAccountState(new ForeignCurrencyBankAccount());
+        //Daha sonra yapılan tüm işlemler bu hesap türüne göre(döviz hesabı) yapılıyor.
+        bankAccount.payMoney();
+        bankAccount.pullMoney();
     }
 }
